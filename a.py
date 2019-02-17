@@ -1,1 +1,1 @@
-ad
+print "hello"
