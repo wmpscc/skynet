@@ -90,7 +90,7 @@ def one_hot_norm(data_set):
 def dating_class_test():
     ho_ratio = 0.1      #verify 10%
 
-    dating_data_mat_linear = file2matrixnumber("input/macan2014_linear.txt", 3)
+    dating_data_mat_linear = file2matrixnumber("input/macan2014_linear.txt", 6)
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
 
 
