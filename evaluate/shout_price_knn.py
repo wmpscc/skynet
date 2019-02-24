@@ -88,7 +88,7 @@ def one_hot_norm(data_set):
     return enc.transform(data_set).toarray()
 
 def dating_class_test():
-    ho_ratio = 0.2      #hold out 10%
+    ho_ratio = 0.1      #verify 10%
 
     dating_data_mat_linear = file2matrixnumber("input/macan2014_linear.txt", 3)
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
@@ -106,7 +106,7 @@ def dating_class_test():
     num_test_vecs = int(m*ho_ratio)
     error_count = 0.0
     for i in range(num_test_vecs):
-        classifier_result = classify(dating_data_mat[i,:],dating_data_mat[num_test_vecs:m,:],dating_labels[num_test_vecs:m],10)
+        classifier_result = classify(dating_data_mat[i,:],dating_data_mat[num_test_vecs:m,:],dating_labels[num_test_vecs:m],5)
         print "the classifier came back with: %s, the real answer is: %s" % (classifier_result, dating_labels[i])
         if (classifier_result != dating_labels[i]): error_count += 1.0
     print "the total error rate is: %f" % (error_count/float(num_test_vecs))
