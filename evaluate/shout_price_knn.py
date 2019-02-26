@@ -90,15 +90,15 @@ def one_hot_norm(data_set):
 def dating_class_test():
     ho_ratio = 0.1      #verify 10%
 
-    dating_data_mat_linear = file2matrixnumber("input/macan2014_linear.txt", 5)
+    dating_data_mat_linear = file2matrixnumber("input/knn/macan2014_linear.txt", 5)
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
 
 
-    dating_data_mat_dispersed = file2matrixstr('input/macan2014_dispersed.txt')
+    dating_data_mat_dispersed = file2matrixstr('input/knn/macan2014_dispersed.txt')
     norm_mat_dispersed = one_hot_norm(dating_data_mat_dispersed)
 
 
-    dating_labels = file2array('input/macan2014_cat.txt')
+    dating_labels = file2array('input/knn/macan2014_cat.txt')
     dating_data_mat = np.hstack((norm_mat_linear, norm_mat_dispersed))
 
 
