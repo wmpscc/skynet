@@ -6,6 +6,7 @@ Created on Oct 19, 2010
 '''
 import numpy as np
 import json
+import math
 
 
 #------------新逻辑------------#
@@ -160,22 +161,27 @@ def classifyNB(vec2Classify):
 
             if category_characteristics.has_key(d_key) and category_characteristics[d_key].has_key(t_key) and category_characteristics[d_key][t_key].has_key(c_key):
                 pba_operation = category_characteristics[d_key][t_key][c_key].split("/")
-                probability[c_key] *=float(pba_operation[0])/float(pba_operation[1])
+                pba_rate = float(pba_operation[0])/float(pba_operation[1])
+                probability[c_key] *= pba_rate
             else:
                 # 此处算法待评估
                 pba_operation = category[c_key].split("/")
-                probability[c_key] *= float(pba_operation[0])/float(pba_operation[1])
+                pba_rate = float(pba_operation[0])/float(pba_operation[1])
+                probability[c_key] *= pba_rate
 
             # P(B)
             if characteristics[d_key].has_key(t_key):
                 pb_operation = characteristics[d_key][t_key].split("/")
-                probability[c_key] = probability[c_key] / (float(pb_operation[0]) / float(pb_operation[1]))
+                pb_rate = (float(pb_operation[0]) / float(pb_operation[1]))
+                probability[c_key] = probability[c_key] / pb_rate
             else:
                 # 此处算法待评估
-                probability[c_key] = probability[c_key] / (1/float(total))
+                pb_rate = (1/float(total))
+                probability[c_key] = probability[c_key] / pb_rate
         # P(A)
         pa_operation = category_val.split("/")
-        probability[c_key] *= float(pa_operation[0])/float(pa_operation[1])
+        pa_rate = float(pa_operation[0])/float(pa_operation[1])
+        probability[c_key] *= pa_rate
 
     sort_probability = sorted(probability.items(),key=lambda item:item[1],reverse=True)
     most_likely = sort_probability[0][0].split(":")
@@ -204,8 +210,11 @@ def dating_class_test():
 
 dating_class_test()
 
-# cls = classifyNB(['0', '12', '51'])
+# cls = classifyNB(['&#21335;&#23425;','0','4','4','0','0','2014','0'])
 # print cls
+
+
+#print math.log(5)
 
 
 # def loadDataSetV2 ():
