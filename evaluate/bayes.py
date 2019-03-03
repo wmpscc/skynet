@@ -39,8 +39,14 @@ def dating_class_test():
     for key,line in enumerate(testMatrix):
         cls = classifyNB([line])
         actual = testCategory[key]
-        print "the classifier came back with: %s, the real answer is: %s" % (cls, actual)
-        if (cls != actual): error_count += 1.0
+
+        notice = ""
+        if (cls != actual):
+            error_count += 1.0
+            notice = "fail"
+
+        print "the classifier came back with: %s, the real answer is: %s %s" % (cls, actual, notice)
+
         #print key,line,cls
     print "the total error rate is: %f" % (error_count/len(testCategory))
     print "right num is: %f" % int((len(testCategory)-error_count))
