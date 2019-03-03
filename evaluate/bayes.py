@@ -20,9 +20,9 @@ def file2array(filename):
     return class_label_vector
 
 def classifyNB(vec2Classify):
-    trainMatrix = file2arrayexpand("input/bayes/macan2014_test_dispersed.txt")
+    trainMatrix = file2arrayexpand("input/bayes/macan2014_train_dispersed.txt")
 
-    trainCategory = file2array("input/bayes/macan2014_test_cat.txt")
+    trainCategory = file2array("input/bayes/macan2014_train_cat.txt")
 
     model = GaussianNB()
 
