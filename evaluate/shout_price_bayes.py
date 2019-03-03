@@ -163,7 +163,8 @@ def classifyNB(vec2Classify):
                 probability[c_key] *=float(pba_operation[0])/float(pba_operation[1])
             else:
                 # 此处算法待评估
-                probability[c_key] *= 1/float(len(category))
+                pba_operation = category[c_key].split("/")
+                probability[c_key] *= float(pba_operation[0])/float(pba_operation[1])
 
             # P(B)
             if characteristics[d_key].has_key(t_key):
