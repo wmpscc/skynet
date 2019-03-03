@@ -130,7 +130,8 @@ def trainNB0(trainMatrix, trainCategory):
     content = {
         "category" : category,
         "characteristics" : characteristics,
-        "category_characteristics" : category_characteristics
+        "category_characteristics" : category_characteristics,
+        "total" : len(trainMatrix)
     }
 
     content = json.dumps(content)
@@ -144,6 +145,7 @@ def classifyNB(vec2Classify):
     category = content["category"]
     characteristics = content["characteristics"]
     category_characteristics = content["category_characteristics"]
+    total = content["total"]
 
     probability = {}
 
@@ -169,7 +171,7 @@ def classifyNB(vec2Classify):
                 probability[c_key] = probability[c_key] / (float(pb_operation[0]) / float(pb_operation[1]))
             else:
                 # 此处算法待评估
-                probability[c_key] = probability[c_key] / (1/float(len(characteristics[d_key])))
+                probability[c_key] = probability[c_key] / (1/float(total))
         # P(A)
         pa_operation = category_val.split("/")
         probability[c_key] *= float(pa_operation[0])/float(pa_operation[1])
@@ -194,13 +196,15 @@ def dating_class_test():
     error_count = 0.0
     for key,line in enumerate(testMatrix):
         cls = classifyNB(line)
-
         print "the classifier came back with: %s, the real answer is: %s" % (cls, testCategory[key])
         if (cls != testCategory[key]): error_count += 1.0
         #print key,line,cls
     print "the total error rate is: %f" % (error_count/len(testCategory))
 
 dating_class_test()
+
+# cls = classifyNB(['0', '12', '51'])
+# print cls
 
 
 # def loadDataSetV2 ():
