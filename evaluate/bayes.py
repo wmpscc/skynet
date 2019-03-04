@@ -35,22 +35,24 @@ def dating_class_test():
     testMatrix = file2arrayexpand("input/bayes/macan2014_test_dispersed.txt")
     testCategory = file2array("input/bayes/macan2014_test_cat.txt")
 
-    error_count = 0.0
+    right_count = 0.0
     for key,line in enumerate(testMatrix):
         cls = classifyNB([line])
         actual = testCategory[key]
 
         notice = ""
+        if (cls == actual):
+            right_count += 1.0
+
         if (cls != actual):
-            error_count += 1.0
             notice = "fail"
 
         print "the classifier came back with: %s, the real answer is: %s %s" % (cls, actual, notice)
 
         #print key,line,cls
-    print "the total error rate is: %f" % (error_count/len(testCategory))
-    print "right num is: %f" % int((len(testCategory)-error_count))
-    print "error num is: %f" % int(error_count)
+    print "the total right rate is: %f" % (right_count/len(testCategory))
+    print "error num is: %f" % int((len(testCategory)-right_count))
+    print "right num is: %f" % int(right_count)
 
 dating_class_test()
 
