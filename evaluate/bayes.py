@@ -7,7 +7,7 @@ def file2arrayexpand(filename):
 
     for line in fr.readlines():
         line = line.strip()
-        class_label_vector.append(list(map(int, line.split(' '))))
+        class_label_vector.append(list(map(float, line.split(' '))))
     return class_label_vector
 
 def file2array(filename):
