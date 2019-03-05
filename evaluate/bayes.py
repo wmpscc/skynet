@@ -19,10 +19,9 @@ def file2array(filename):
         class_label_vector.append(int(line))
     return class_label_vector
 
-def classifyNB(vec2Classify):
-    trainMatrix = file2arrayexpand("input/bayes/macan2014_train_dispersed.txt")
-
-    trainCategory = file2array("input/bayes/macan2014_train_cat.txt")
+def classifyNB(vec2Classify, n_name):
+    trainMatrix = file2arrayexpand("input/bayes/"+bytes(n_name)+"/macan2014_train_dispersed.txt")
+    trainCategory = file2array("input/bayes/"+bytes(n_name)+"/macan2014_train_cat.txt")
 
     model = GaussianNB()
 
@@ -30,14 +29,15 @@ def classifyNB(vec2Classify):
     predicted = model.predict(vec2Classify)
     return predicted[0]
 
-def dating_class_test():
+def dating_class_test(n_name):
 
-    testMatrix = file2arrayexpand("input/bayes/macan2014_test_dispersed.txt")
-    testCategory = file2array("input/bayes/macan2014_test_cat.txt")
+    testMatrix = file2arrayexpand("input/bayes/"+bytes(n_name)+"/macan2014_test_dispersed.txt")
+    testCategory = file2array("input/bayes/"+bytes(n_name)+"/macan2014_test_cat.txt")
+
 
     right_count = 0.0
     for key,line in enumerate(testMatrix):
-        cls = classifyNB([line])
+        cls = classifyNB([line], n_name)
         actual = testCategory[key]
 
         notice = ""
@@ -50,11 +50,27 @@ def dating_class_test():
         print "the classifier came back with: %s, the real answer is: %s %s" % (cls, actual, notice)
 
         #print key,line,cls
-    print "the total right rate is: %f" % (right_count/len(testCategory))
+    rate = right_count/len(testCategory)
+    print "the total right rate is: %f" % (rate)
     print "error num is: %f" % int((len(testCategory)-right_count))
     print "right num is: %f" % int(right_count)
 
-dating_class_test()
+    return rate
+
+def dating_class_test_all():
+
+    total = 0
+    for n_name in range(10):
+        total += dating_class_test(n_name)
+
+    print "\n"
+
+    print "avg rate is: %f" % (total/10)
+
+dating_class_test_all()
+
+
+#dating_class_test(0)
 
 #s = classifyNB([[0,5,3,0,0,2016,0]])
 # s = classifyNB([[0,5,3,0,0,2016,0]])
