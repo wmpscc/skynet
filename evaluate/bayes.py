@@ -47,7 +47,12 @@ def dating_class_test(n_name):
         if (cls != actual):
             notice = "fail"
 
-        print "the classifier came back with: %s, the real answer is: %s %s" % (cls, actual, notice)
+        cha = cls-actual
+        too_many = ""
+        if cha > 5 or cha < -5 :
+            too_many = "many"
+
+        print "the classifier came back with: %s, the real answer is: %s %s %s" % (cls, actual, notice, too_many)
 
         #print key,line,cls
     rate = right_count/len(testCategory)
