@@ -82,7 +82,7 @@ def dating_class_test(n_name):
 
         cha = cls-actual
         too_many = ""
-        if cha >= 5 or cha <= -5 :
+        if cha >= 3 or cha <= -3 :
             too_many = "many"
 
         print "the classifier came back with: %s, the real answer is: %s %s %s" % (cls, actual, notice, too_many)
