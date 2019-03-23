@@ -46,11 +46,11 @@ def file2array(filename):
 
 def classifyNB(vec2Classify, n_name):
 
-    dating_data_mat_linear = file2matrixnumber("input/bayes/"+bytes(n_name)+"/macan2014_train_dispersed.txt", 3)
+    dating_data_mat_linear = file2matrixnumber("input/knn/"+bytes(n_name)+"/macan2014_train_dispersed.txt", 3)
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
     norm_mat_linear = norm_mat_linear.tolist()
 
-    testCategory = file2array("input/bayes/"+bytes(n_name)+"/macan2014_train_cat.txt")
+    testCategory = file2array("input/knn/"+bytes(n_name)+"/macan2014_train_cat.txt")
 
 
     knn_classifier = KNeighborsClassifier()
@@ -61,11 +61,11 @@ def classifyNB(vec2Classify, n_name):
 
 
 def dating_class_test(n_name):
-    dating_data_mat_linear = file2matrixnumber("input/bayes/"+bytes(n_name)+"/macan2014_test_dispersed.txt", 3)
+    dating_data_mat_linear = file2matrixnumber("input/knn/"+bytes(n_name)+"/macan2014_test_dispersed.txt", 3)
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
     testMatrix = norm_mat_linear.tolist()
 
-    testCategory = file2array("input/bayes/"+bytes(n_name)+"/macan2014_test_cat.txt")
+    testCategory = file2array("input/knn/"+bytes(n_name)+"/macan2014_test_cat.txt")
 
 
     right_count = 0.0
