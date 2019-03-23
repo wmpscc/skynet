@@ -44,54 +44,68 @@ def file2array(filename):
 
     return class_label_vector
 
-def classifyNB(vec2Classify):
-    dating_data_mat_linear = file2matrixnumber("input/knn/macan2014_linear.txt", 5)
+def classifyNB(vec2Classify, n_name):
+
+    dating_data_mat_linear = file2matrixnumber("input/bayes/"+bytes(n_name)+"/macan2014_train_dispersed.txt", 3)
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
+    norm_mat_linear = norm_mat_linear.tolist()
 
-    dating_data_mat_dispersed = file2matrixstr('input/knn/macan2014_dispersed.txt')
-    norm_mat_dispersed = one_hot_norm(dating_data_mat_dispersed)
-
-    testMatrix = np.hstack((norm_mat_linear, norm_mat_dispersed))
-    testCategory = file2array('input/knn/macan2014_cat.txt')
+    testCategory = file2array("input/bayes/"+bytes(n_name)+"/macan2014_train_cat.txt")
 
 
     knn_classifier = KNeighborsClassifier()
-    knn_classifier.fit(testMatrix,testCategory)
+    knn_classifier.fit(norm_mat_linear,testCategory)
 
     predicted = knn_classifier.predict(vec2Classify)
     return predicted[0]
 
 
-def dating_class_test():
-    dating_data_mat_linear = file2matrixnumber("input/knn/macan2014_linear.txt", 5)
+def dating_class_test(n_name):
+    dating_data_mat_linear = file2matrixnumber("input/bayes/"+bytes(n_name)+"/macan2014_test_dispersed.txt", 3)
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
+    testMatrix = norm_mat_linear.tolist()
 
-    dating_data_mat_dispersed = file2matrixstr('input/knn/macan2014_dispersed.txt')
-    norm_mat_dispersed = one_hot_norm(dating_data_mat_dispersed)
-
-    testCategory = file2array('input/knn/macan2014_cat.txt')
-    testMatrix = np.hstack((norm_mat_linear, norm_mat_dispersed))
+    testCategory = file2array("input/bayes/"+bytes(n_name)+"/macan2014_test_cat.txt")
 
 
-
-    error_count = 0.0
+    right_count = 0.0
     for key,line in enumerate(testMatrix):
-        cls = classifyNB([line])
+        cls = classifyNB([line], n_name)
         actual = testCategory[key]
 
         notice = ""
+        if (cls == actual):
+            right_count += 1.0
+
         if (cls != actual):
-            error_count += 1.0
             notice = "fail"
 
-        print "the classifier came back with: %s, the real answer is: %s %s" % (cls, actual, notice)
+        cha = cls-actual
+        too_many = ""
+        if cha >= 5 or cha <= -5 :
+            too_many = "many"
+
+        print "the classifier came back with: %s, the real answer is: %s %s %s" % (cls, actual, notice, too_many)
 
         #print key,line,cls
-    print "the total error rate is: %f" % (error_count/len(testCategory))
-    print "right num is: %f" % int((len(testCategory)-error_count))
-    print "error num is: %f" % int(error_count)
+    rate = right_count/len(testCategory)
+    print "the total right rate is: %f" % (rate)
+    print "error num is: %f" % int((len(testCategory)-right_count))
+    print "right num is: %f" % int(right_count)
 
-dating_class_test()
+    return rate
+
+def dating_class_test_all():
+
+    total = 0
+    for n_name in range(10):
+        total += dating_class_test(n_name)
+
+    print "\n"
+
+    print "avg rate is: %f" % (total/10)
+
+dating_class_test_all()
 
 
 
