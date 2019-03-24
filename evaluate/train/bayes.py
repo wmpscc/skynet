@@ -1,5 +1,10 @@
 from sklearn.naive_bayes import GaussianNB
 import numpy as np
+import os
+
+
+
+root_dir = os.path.abspath(os.path.join(os.getcwd(), "../"))
 
 def file2arrayexpand(filename):
     fr = open(filename)
@@ -20,8 +25,8 @@ def file2array(filename):
     return class_label_vector
 
 def classifyNB(vec2Classify, n_name):
-    trainMatrix = file2arrayexpand("input/bayes/"+bytes(n_name)+"/macan2014_train_dispersed.txt")
-    trainCategory = file2array("input/bayes/"+bytes(n_name)+"/macan2014_train_cat.txt")
+    trainMatrix = file2arrayexpand(root_dir+"/input/bayes/"+bytes(n_name)+"/macan2014_train_dispersed.txt")
+    trainCategory = file2array(root_dir+"/input/bayes/"+bytes(n_name)+"/macan2014_train_cat.txt")
 
     model = GaussianNB()
 
@@ -30,9 +35,8 @@ def classifyNB(vec2Classify, n_name):
     return predicted[0]
 
 def dating_class_test(n_name):
-
-    testMatrix = file2arrayexpand("input/bayes/"+bytes(n_name)+"/macan2014_test_dispersed.txt")
-    testCategory = file2array("input/bayes/"+bytes(n_name)+"/macan2014_test_cat.txt")
+    testMatrix = file2arrayexpand(root_dir+"/input/bayes/"+bytes(n_name)+"/macan2014_test_dispersed.txt")
+    testCategory = file2array(root_dir+"/input/bayes/"+bytes(n_name)+"/macan2014_test_cat.txt")
 
 
     right_count = 0.0
@@ -73,12 +77,3 @@ def dating_class_test_all():
     print "avg rate is: %f" % (total/10)
 
 dating_class_test_all()
-
-
-#dating_class_test(0)
-
-#s = classifyNB([[0,5,3,0,0,2016,0]])
-# s = classifyNB([[0,5,3,0,0,2016,0]])
-# print s
-
-
