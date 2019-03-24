@@ -7,31 +7,9 @@ import os
 
 root_dir = os.path.abspath(os.path.join(os.getcwd(), "../"))
 
-def file2matrixnumber(filename, colnum):
-    fr = open(filename)
-    number_oflines = len(fr.readlines())
-    return_mat = np.zeros((number_oflines, colnum))
-    fr = open(filename)
-    index = 0
-    for line in fr.readlines():
-        line = line.strip()
-        list_from_line = line.split(' ')
-        return_mat[index, :] = list_from_line[0:colnum]
-        index += 1
-    return return_mat
 
 def z_score_norm(data_set):
     return preprocessing.MinMaxScaler().fit_transform(data_set)
-
-def file2matrixstr(filename):
-    fr = open(filename)
-    class_label_vector = []
-
-    for line in fr.readlines():
-        line = line.strip()
-        list_from_line = line.split(' ')
-        class_label_vector.append(list_from_line)
-    return np.array(class_label_vector)
 
 def one_hot_norm(data_set):
     enc = preprocessing.OneHotEncoder()
@@ -48,11 +26,22 @@ def file2array(filename):
 
     return class_label_vector
 
+
+def file2arrayexpand(filename):
+    fr = open(filename)
+    class_label_vector = []
+
+    for line in fr.readlines():
+        line = line.strip()
+        class_label_vector.append(list(map(float, line.split(' '))))
+    return class_label_vector
+
 def classifyNB(vec2Classify, n_name):
 
-    dating_data_mat_linear = file2matrixnumber(root_dir+"/input/knn/"+bytes(n_name)+"/macan2014_train_dispersed.txt", 3)
+    dating_data_mat_linear = file2arrayexpand(
+        root_dir + "/input/knn/" + bytes(n_name) + "/macan2014_train_dispersed.txt")
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
-    norm_mat_linear = norm_mat_linear.tolist()
+
 
     testCategory = file2array(root_dir+"/input/knn/"+bytes(n_name)+"/macan2014_train_cat.txt")
 
@@ -65,9 +54,11 @@ def classifyNB(vec2Classify, n_name):
 
 
 def dating_class_test(n_name):
-    dating_data_mat_linear = file2matrixnumber(root_dir+"/input/knn/"+bytes(n_name)+"/macan2014_test_dispersed.txt", 3)
-    norm_mat_linear = z_score_norm(dating_data_mat_linear)
-    testMatrix = norm_mat_linear.tolist()
+
+    dating_data_mat_linear = file2arrayexpand(
+        root_dir + "/input/knn/" + bytes(n_name) + "/macan2014_test_dispersed.txt")
+
+    testMatrix = z_score_norm(dating_data_mat_linear)
 
     testCategory = file2array(root_dir+"/input/knn/"+bytes(n_name)+"/macan2014_test_cat.txt")
 
