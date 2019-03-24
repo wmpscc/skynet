@@ -23,6 +23,16 @@ def file2array(filename):
 
     return class_label_vector
 
+def file2arrayfloat(filename):
+    fr = open(filename)
+    class_label_vector = []
+
+    for line in fr.readlines():
+        line = line.strip()
+        class_label_vector.append(float(line))
+
+    return class_label_vector
+
 
 def file2arrayexpand(filename):
     fr = open(filename)
@@ -37,6 +47,9 @@ def avgInfo(n_name) :
     filename = root_dir + "/input/product/" + n_name + ".txt"
     listCar = file2arrayexpand(filename)
 
+    priceFileName = root_dir + "/input/product/" + n_name + "_price.txt"
+    trainCategory = file2arrayfloat(priceFileName)
+
     total = len(listCar)
     kilo = 0
     card = 0
@@ -49,7 +62,7 @@ def avgInfo(n_name) :
     timeArray = time.localtime(math.ceil(card/total))
     otherStyleTime = time.strftime("%Y-%m", timeArray)
 
-    return round(kilo/total, 2), otherStyleTime, math.ceil(quality/total)
+    return round(sum(trainCategory)/total, 2), round(kilo/total, 2), otherStyleTime, math.ceil(quality/total)
 
 #knn算法#
 def z_score_norm(data_set):
@@ -113,13 +126,14 @@ def classify(vec2Classify, n_name) :
     treePrice = classifyTree([vec2Classify], n_name)
     print "tree answer is: %sw" % (treePrice)
 
-    kilo, card, quality = avgInfo(n_name)
+    price, kilo, card, quality = avgInfo(n_name)
     print "样本平均"
+    print "   %sw" % (price)
     print "   %s 公里" % (kilo)
     print "   %s 上牌" % (card)
     print "   %s 处异常" % (quality)
 
 
-classify([3.29,1409795550,14], "macan_2014")
+classify([2.61,1422748800,4], "macan_2014")
 
 
