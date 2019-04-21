@@ -25,8 +25,8 @@ def file2array(filename):
     return class_label_vector
 
 def classifyNB(vec2Classify, n_name):
-    trainMatrix = file2arrayexpand(root_dir+"/input/bayes/"+bytes(n_name)+"/macan2014_train_dispersed.txt")
-    trainCategory = file2array(root_dir+"/input/bayes/"+bytes(n_name)+"/macan2014_train_cat.txt")
+    trainMatrix = file2arrayexpand(root_dir+"/input/bayes/"+(n_name)+"/macan2014_train_dispersed.txt")
+    trainCategory = file2array(root_dir+"/input/bayes/"+(n_name)+"/macan2014_train_cat.txt")
 
     model = GaussianNB()
 
@@ -35,8 +35,8 @@ def classifyNB(vec2Classify, n_name):
     return predicted[0]
 
 def dating_class_test(n_name):
-    testMatrix = file2arrayexpand(root_dir+"/input/bayes/"+bytes(n_name)+"/macan2014_test_dispersed.txt")
-    testCategory = file2array(root_dir+"/input/bayes/"+bytes(n_name)+"/macan2014_test_cat.txt")
+    testMatrix = file2arrayexpand(root_dir+"/input/bayes/"+(n_name)+"/macan2014_test_dispersed.txt")
+    testCategory = file2array(root_dir+"/input/bayes/"+(n_name)+"/macan2014_test_cat.txt")
 
 
     right_count = 0.0
@@ -70,6 +70,7 @@ def dating_class_test_all():
 
     total = 0
     for n_name in range(10):
+        n_name = '%s' % n_name
         total += dating_class_test(n_name)
 
     print ("\n")
