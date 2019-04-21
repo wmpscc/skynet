@@ -39,11 +39,11 @@ def file2arrayexpand(filename):
 def classifyNB(vec2Classify, n_name):
 
     dating_data_mat_linear = file2arrayexpand(
-        root_dir + "/input/knn/" + bytes(n_name) + "/macan2014_train_dispersed.txt")
+        root_dir + "/input/knn/" + (n_name) + "/macan2014_train_dispersed.txt")
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
 
 
-    testCategory = file2array(root_dir+"/input/knn/"+bytes(n_name)+"/macan2014_train_cat.txt")
+    testCategory = file2array(root_dir+"/input/knn/"+(n_name)+"/macan2014_train_cat.txt")
 
 
     knn_classifier = KNeighborsClassifier()
@@ -56,11 +56,11 @@ def classifyNB(vec2Classify, n_name):
 def dating_class_test(n_name):
 
     dating_data_mat_linear = file2arrayexpand(
-        root_dir + "/input/knn/" + bytes(n_name) + "/macan2014_test_dispersed.txt")
+        root_dir + "/input/knn/" + (n_name) + "/macan2014_test_dispersed.txt")
 
     testMatrix = z_score_norm(dating_data_mat_linear)
 
-    testCategory = file2array(root_dir+"/input/knn/"+bytes(n_name)+"/macan2014_test_cat.txt")
+    testCategory = file2array(root_dir+"/input/knn/"+(n_name)+"/macan2014_test_cat.txt")
 
 
     right_count = 0.0
@@ -94,6 +94,7 @@ def dating_class_test_all():
 
     total = 0
     for n_name in range(10):
+        n_name = '%s' % n_name
         total += dating_class_test(n_name)
 
     print ("\n")
