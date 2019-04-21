@@ -56,13 +56,13 @@ def dating_class_test(n_name):
         if cha >= 3 or cha <= -3 :
             too_many = "many"
 
-        print "the classifier came back with: %s, the real answer is: %s %s %s" % (cls, actual, notice, too_many)
+        print ("the classifier came back with: %s, the real answer is: %s %s %s" % (cls, actual, notice, too_many))
 
         #print key,line,cls
     rate = right_count/len(testCategory)
-    print "the total right rate is: %f" % (rate)
-    print "error num is: %f" % int((len(testCategory)-right_count))
-    print "right num is: %f" % int(right_count)
+    print ("the total right rate is: %f" % (rate))
+    print ("error num is: %f" % int((len(testCategory)-right_count)))
+    print ("right num is: %f" % int(right_count))
 
     return rate
 
@@ -72,8 +72,8 @@ def dating_class_test_all():
     for n_name in range(10):
         total += dating_class_test(n_name)
 
-    print "\n"
+    print ("\n")
 
-    print "avg rate is: %f" % (total/10)
+    print ("avg rate is: %f" % (total/10))
 
 dating_class_test_all()
