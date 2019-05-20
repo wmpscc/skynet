@@ -14,27 +14,28 @@ class Evaluate(Base):
     __tablename__ = 'evaluate'
 
     # 表的结构
-    model_id = Column(String(32), primary_key=True)
+    unique_id = Column(String(32), primary_key=True)
     bayes_model = Column(String(20))
     knn_model = Column(String(20))
     tree_model = Column(String(20))
 
 
 # 初始化数据库链接
-engine = create_engine('mysql+mysqlconnector://root:421421mfw@localhost:3306/car_dev')
+engine = create_engine('mysql+mysqlconnector://root:421421mfw@localhost:3306/car')
 
 # 创建DBSession类型
 DBSession = sessionmaker(bind=engine)
 
+session = DBSession()
 
 # 添加
-# 创建Session对象
-session = DBSession()
-# 创建User对象
-new_user = Evaluate(model_id='sads', bayes_model='Bob', knn_model='Bob', tree_model='Bob')
-# 添加到session
-session.add(new_user)
-# 提交
-session.commit()
-# 关闭session
-session.close()
+
+# new_user = Evaluate(unique_id='sads', bayes_model='Bob', knn_model='Bob', tree_model='Bob')
+# session.add(new_user)
+# session.commit()
+# session.close()
+
+# 查询
+
+my_evaluate = session.query(Evaluate).filter_by(unique_id="sads").first()
+print(my_evaluate.unique_id)
