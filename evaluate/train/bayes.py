@@ -1,32 +1,27 @@
+# -*- coding: UTF-8 -*-
 from sklearn.naive_bayes import GaussianNB
 import numpy as np
 import os
+import sys
 
+sys.path.append('../..')
 
+from model.evaluate import DbEvaluate
+from service.train import getModelByGroup
 
-root_dir = os.path.abspath(os.path.join(os.getcwd(), "../"))
+# 分组个数
+groupNum = 15
+# 每个组测试集占比
+testPercentage = 0.2
+# 模型id
+modelId = "5eaa738b471bb8100538ad4543546a66"
 
-def file2arrayexpand(filename):
-    fr = open(filename)
-    class_label_vector = []
-
-    for line in fr.readlines():
-        line = line.strip()
-        class_label_vector.append(list(map(float, line.split(' '))))
-    return class_label_vector
-
-def file2array(filename):
-    fr = open(filename)
-    class_label_vector = []
-
-    for line in fr.readlines():
-        line = line.strip()
-        class_label_vector.append(int(line))
-    return class_label_vector
+db = DbEvaluate()
+trainModel = db.getBayesModel(modelId)
 
 def classifyNB(vec2Classify, n_name):
-    trainMatrix = file2arrayexpand(root_dir+"/input/bayes/"+(n_name)+"/macan2014_train_dispersed.txt")
-    trainCategory = file2array(root_dir+"/input/bayes/"+(n_name)+"/macan2014_train_cat.txt")
+
+    trainMatrix, trainCategory = getModelByGroup(n_name, "dispersed", trainModel, groupNum, testPercentage)
 
     model = GaussianNB()
 
@@ -35,9 +30,8 @@ def classifyNB(vec2Classify, n_name):
     return predicted[0]
 
 def dating_class_test(n_name):
-    testMatrix = file2arrayexpand(root_dir+"/input/bayes/"+(n_name)+"/macan2014_test_dispersed.txt")
-    testCategory = file2array(root_dir+"/input/bayes/"+(n_name)+"/macan2014_test_cat.txt")
 
+    testMatrix, testCategory = getModelByGroup(n_name, "test", trainModel, groupNum, testPercentage)
 
     right_count = 0.0
     for key,line in enumerate(testMatrix):
