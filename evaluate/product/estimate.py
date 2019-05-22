@@ -85,7 +85,7 @@ def classify(vec2Classify, modelId) :
 
     return round(price/3, 2)
 
-price = classify([2.61,1422748800,4], "5eaa738b471bb8100538ad4543546a66")
+price = classify([3.2,1425168000,0], "5eaa738b471bb8100538ad4543546a66")
 print price
 
 
