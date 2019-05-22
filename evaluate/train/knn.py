@@ -1,12 +1,27 @@
+# -*- coding: UTF-8 -*-
+from __future__ import division
 from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
 import operator
 from sklearn import preprocessing
 import os
+import sys
 
 
-root_dir = os.path.abspath(os.path.join(os.getcwd(), "../"))
+sys.path.append('../..')
 
+from model.evaluate import DbEvaluate
+from service.train import getModelByGroup
+
+# 分组个数
+groupNum = 15
+# 每个组测试集占比
+testPercentage = 0.2
+# 模型id
+modelId = "5eaa738b471bb8100538ad4543546a66"
+
+db = DbEvaluate()
+trainModel = db.getKnnModel(modelId)
 
 def z_score_norm(data_set):
     return preprocessing.MinMaxScaler().fit_transform(data_set)
@@ -16,36 +31,10 @@ def one_hot_norm(data_set):
     enc.fit(data_set)
     return enc.transform(data_set).toarray()
 
-def file2array(filename):
-    fr = open(filename)
-    class_label_vector = []
-
-    for line in fr.readlines():
-        line = line.strip()
-        class_label_vector.append(int(line))
-
-    return class_label_vector
-
-
-def file2arrayexpand(filename):
-    fr = open(filename)
-    class_label_vector = []
-
-    for line in fr.readlines():
-        line = line.strip()
-        class_label_vector.append(list(map(float, line.split(' '))))
-    return class_label_vector
-
 def classifyNB(vec2Classify, n_name):
+    dating_data_mat_linear, testCategory = getModelByGroup(n_name, "dispersed", trainModel, groupNum, testPercentage)
 
-    dating_data_mat_linear = file2arrayexpand(
-        root_dir + "/input/knn/" + (n_name) + "/macan2014_train_dispersed.txt")
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
-
-
-    testCategory = file2array(root_dir+"/input/knn/"+(n_name)+"/macan2014_train_cat.txt")
-
-
     knn_classifier = KNeighborsClassifier()
     knn_classifier.fit(norm_mat_linear,testCategory)
 
@@ -54,14 +43,9 @@ def classifyNB(vec2Classify, n_name):
 
 
 def dating_class_test(n_name):
-
-    dating_data_mat_linear = file2arrayexpand(
-        root_dir + "/input/knn/" + (n_name) + "/macan2014_test_dispersed.txt")
+    dating_data_mat_linear, testCategory = getModelByGroup(n_name, "test", trainModel, groupNum, testPercentage)
 
     testMatrix = z_score_norm(dating_data_mat_linear)
-
-    testCategory = file2array(root_dir+"/input/knn/"+(n_name)+"/macan2014_test_cat.txt")
-
 
     right_count = 0.0
     for key,line in enumerate(testMatrix):
