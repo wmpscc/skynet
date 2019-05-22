@@ -30,4 +30,13 @@ class DbEvaluate:
 
         return json.loads(my_evaluate.knn_model)
 
+    def getBayesModel(self, unique_id):
+        my_evaluate = self._getModel(unique_id)
+
+        return json.loads(my_evaluate.bayes_model)
+
+    def getTreeModel(self, unique_id):
+        my_evaluate = self._getModel(unique_id)
+
+        return json.loads(my_evaluate.tree_model)
 
