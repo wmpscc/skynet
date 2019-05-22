@@ -1,68 +1,14 @@
 # -*- coding: UTF-8 -*-
+from __future__ import division
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn import tree
-import numpy as np
-import operator
 from sklearn import preprocessing
-import os
-import math
-import time
+import sys
 
+sys.path.append('../..')
 
-root_dir = os.path.abspath(os.path.join(os.getcwd(), "../"))
-
-#工具#
-def file2array(filename):
-    fr = open(filename)
-    class_label_vector = []
-
-    for line in fr.readlines():
-        line = line.strip()
-        class_label_vector.append(int(line))
-
-    return class_label_vector
-
-def file2arrayfloat(filename):
-    fr = open(filename)
-    class_label_vector = []
-
-    for line in fr.readlines():
-        line = line.strip()
-        class_label_vector.append(float(line))
-
-    return class_label_vector
-
-
-def file2arrayexpand(filename):
-    fr = open(filename)
-    class_label_vector = []
-
-    for line in fr.readlines():
-        line = line.strip()
-        class_label_vector.append(list(map(float, line.split(' '))))
-    return class_label_vector
-
-def avgInfo(n_name) :
-    filename = root_dir + "/input/product/" + n_name + ".txt"
-    listCar = file2arrayexpand(filename)
-
-    priceFileName = root_dir + "/input/product/" + n_name + "_price.txt"
-    trainCategory = file2arrayfloat(priceFileName)
-
-    total = len(listCar)
-    kilo = 0
-    card = 0
-    quality = 0
-    for car in listCar:
-        kilo += car[0]
-        card += car[1]
-        quality += car[2]
-
-    timeArray = time.localtime(math.ceil(card/total))
-    otherStyleTime = time.strftime("%Y-%m", timeArray)
-
-    return round(sum(trainCategory)/total, 2), round(kilo/total, 2), otherStyleTime, math.ceil(quality/total)
+from model.evaluate import DbEvaluate
 
 #knn算法#
 def z_score_norm(data_set):
@@ -74,16 +20,15 @@ def one_hot_norm(data_set):
     return enc.transform(data_set).toarray()
 
 
-def classifyKnn(vec2Classify, n_name):
+def classifyKnn(vec2Classify, modelId):
 
-    dating_data_mat_linear = file2arrayexpand(
-        root_dir + "/input/product/"+n_name+".txt")
+    db = DbEvaluate()
+    trainModel = db.getKnnModel(modelId)
+
+    dating_data_mat_linear = trainModel['feature']
+    testCategory = trainModel['classificate']
+
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
-
-
-    testCategory = file2array(root_dir+"/input/product/"+n_name+"_cat.txt")
-
-
     knn_classifier = KNeighborsClassifier()
     knn_classifier.fit(norm_mat_linear,testCategory)
 
@@ -92,9 +37,13 @@ def classifyKnn(vec2Classify, n_name):
 
 
 #朴树贝叶斯（高斯模型）#
-def classifyBayes(vec2Classify, n_name):
-    trainMatrix = file2arrayexpand(root_dir+"/input/product/"+n_name+".txt")
-    trainCategory = file2array(root_dir+"/input/product/"+n_name+"_cat.txt")
+def classifyBayes(vec2Classify, modelId):
+
+    db = DbEvaluate()
+    trainModel = db.getKnnModel(modelId)
+
+    trainMatrix = trainModel['feature']
+    trainCategory = trainModel['classificate']
 
     model = GaussianNB()
 
@@ -104,9 +53,12 @@ def classifyBayes(vec2Classify, n_name):
 
 
 #决策树#
-def classifyTree(vec2Classify, n_name):
-    trainMatrix = file2arrayexpand(root_dir+"/input/product/"+n_name+".txt")
-    trainCategory = file2array(root_dir+"/input/product/"+n_name+"_cat.txt")
+def classifyTree(vec2Classify, modelId):
+    db = DbEvaluate()
+    trainModel = db.getKnnModel(modelId)
+
+    trainMatrix = trainModel['feature']
+    trainCategory = trainModel['classificate']
 
     model = tree.DecisionTreeClassifier()
     model.fit(trainMatrix, trainCategory)
@@ -116,24 +68,24 @@ def classifyTree(vec2Classify, n_name):
 
 #逻辑控制#
 
-def classify(vec2Classify, n_name) :
-    knnPrice = classifyKnn([vec2Classify], n_name)
+def classify(vec2Classify, modelId) :
+    price = 0
+
+    knnPrice = classifyKnn([vec2Classify], modelId)
     print "knn answer is: %sw" % (knnPrice)
+    price += knnPrice
 
-    treeBayes = classifyBayes([vec2Classify], n_name)
-    print "bayes answer is: %sw" % (treeBayes)
+    bayesPrice = classifyBayes([vec2Classify], modelId)
+    print "bayes answer is: %sw" % (bayesPrice)
+    price += bayesPrice
 
-    treePrice = classifyTree([vec2Classify], n_name)
+    treePrice = classifyTree([vec2Classify], modelId)
     print "tree answer is: %sw" % (treePrice)
+    price += treePrice
 
-    price, kilo, card, quality = avgInfo(n_name)
-    print "样本平均"
-    print "   %sw" % (price)
-    print "   %s 公里" % (kilo)
-    print "   %s 上牌" % (card)
-    print "   %s 处异常" % (quality)
+    return round(price/3, 2)
 
-
-classify([2.61,1422748800,4], "macan_2014")
+price = classify([2.61,1422748800,4], "5eaa738b471bb8100538ad4543546a66")
+print price
 
 
