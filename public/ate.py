@@ -12,10 +12,7 @@ def main():
     print ("Content-type: text/html\n")
     form = cgi.FieldStorage()
 
-    price = classify([3.2, 1425168000, 0], form.getvalue('model_id'))
-
-
-
+    price = classify([float(form.getvalue('kilometre')), int(form.getvalue('card_date')), int(form.getvalue('quality'))], form.getvalue('model_id'))
 
     data = {"price": price}
 
