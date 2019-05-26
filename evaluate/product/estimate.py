@@ -72,20 +72,16 @@ def classify(vec2Classify, modelId) :
     price = 0
 
     knnPrice = classifyKnn([vec2Classify], modelId)
-    print "knn answer is: %sw" % (knnPrice)
     price += knnPrice
 
     bayesPrice = classifyBayes([vec2Classify], modelId)
-    print "bayes answer is: %sw" % (bayesPrice)
     price += bayesPrice
 
     treePrice = classifyTree([vec2Classify], modelId)
-    print "tree answer is: %sw" % (treePrice)
     price += treePrice
 
     return round(price/3, 2)
 
-price = classify([3.2,1425168000,0], "5eaa738b471bb8100538ad4543546a66")
-print price
+
 
 
