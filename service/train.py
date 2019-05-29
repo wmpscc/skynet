@@ -74,8 +74,8 @@ def similarSort(master, origin):
     distances = sq_distances ** 0.5
     sorted_distIndicies = distances.argsort()
 
-    result_list = []
-    for i in range(list_size):
-        result_list.append(origin[sorted_distIndicies[i]])
+    # result_list = []
+    # for i in range(list_size):
+    #     result_list.append(origin[sorted_distIndicies[i]])
 
-    return result_list
+    return sorted_distIndicies
