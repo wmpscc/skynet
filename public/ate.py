@@ -3,8 +3,6 @@ import cgi
 import json
 import sys
 
-import platform
-
 sys.path.append('..')
 from evaluate.product.estimate import classify
 
