@@ -78,4 +78,4 @@ def similarSort(master, origin):
     # for i in range(list_size):
     #     result_list.append(origin[sorted_distIndicies[i]])
 
-    return sorted_distIndicies
+    return sorted_distIndicies.tolist()
