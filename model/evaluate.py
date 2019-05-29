@@ -27,16 +27,18 @@ class DbEvaluate:
 
     def getKnnModel(self, unique_id):
         my_evaluate = self._getModel(unique_id)
-
-        return json.loads(my_evaluate.knn_model)
+        origin = json.loads(my_evaluate.knn_model)
+        return origin.train
 
     def getBayesModel(self, unique_id):
         my_evaluate = self._getModel(unique_id)
 
-        return json.loads(my_evaluate.bayes_model)
+        origin = json.loads(my_evaluate.bayes_model)
+        return origin.train
 
     def getTreeModel(self, unique_id):
         my_evaluate = self._getModel(unique_id)
 
-        return json.loads(my_evaluate.tree_model)
+        origin = json.loads(my_evaluate.tree_model)
+        return origin.train
 
