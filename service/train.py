@@ -3,7 +3,7 @@ import math
 import numpy as np
 from sklearn import preprocessing
 
-def getModelByGroup(group, type, trainModel, groupNum, testPercentage):
+def getModelByGroup(group, type, trainModel, ids, groupNum, testPercentage):
     group = int(group)
     feature = trainModel['feature']
     classificate = trainModel['classificate']
@@ -21,11 +21,13 @@ def getModelByGroup(group, type, trainModel, groupNum, testPercentage):
         start = group*capacityNum
         needFeature = feature[start:]
         needClassificate = classificate[start:]
+        needIds = ids[start:]
     else:
         start = group * capacityNum
         end = (group+1) * capacityNum
         needFeature = feature[start:end]
         needClassificate = classificate[start:end]
+        needIds = ids[start:end]
 
     # 训练、测试数据集划分
     testEnd = int(math.ceil(capacityNum * testPercentage))
@@ -33,11 +35,13 @@ def getModelByGroup(group, type, trainModel, groupNum, testPercentage):
     if type == 'dispersed':
         resultFeature = needFeature[testEnd:]
         resultClassificate = needClassificate[testEnd:]
+        resultIds = needIds[testEnd:]
     else:
         resultFeature = needFeature[:testEnd]
         resultClassificate = needClassificate[:testEnd]
+        resultIds = needIds[:testEnd]
 
-    return resultFeature, resultClassificate
+    return resultFeature, resultClassificate, resultIds
 
 # z-score归一化
 def z_score_norm(data_set):
