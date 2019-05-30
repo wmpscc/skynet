@@ -12,17 +12,18 @@ from model.evaluate import DbEvaluate
 from service.train import getModelByGroup
 
 # 分组个数
-groupNum = 15
+groupNum = 6
 # 每个组测试集占比
 testPercentage = 0.2
 # 模型id
-modelId = "5eaa738b471bb8100538ad4543546a66"
+modelId = "b28c2c3f2a479b809fce69a318ac67b0"
 
 db = DbEvaluate()
 trainModel = db.getTreeModel(modelId)
+originModel = db.getKnn(modelId)
 
 def classifyNB(vec2Classify, n_name):
-    trainMatrix, trainCategory = getModelByGroup(n_name, "dispersed", trainModel, groupNum, testPercentage)
+    trainMatrix, trainCategory, allIds = getModelByGroup(n_name, "dispersed", trainModel, originModel["ids"], groupNum, testPercentage)
 
     model = tree.DecisionTreeClassifier()
     model.fit(trainMatrix, trainCategory)
@@ -31,7 +32,7 @@ def classifyNB(vec2Classify, n_name):
     return predicted[0]
 
 def dating_class_test(n_name):
-    testMatrix, testCategory = getModelByGroup(n_name, "test", trainModel, groupNum, testPercentage)
+    testMatrix, testCategory, allIds = getModelByGroup(n_name, "test", trainModel, originModel["ids"],groupNum, testPercentage)
 
     right_count = 0.0
     for key,line in enumerate(testMatrix):
@@ -50,7 +51,8 @@ def dating_class_test(n_name):
         if cha >= 3 or cha <= -3 :
             too_many = "many"
 
-        print ("the classifier came back with: %s, the real answer is: %s %s %s" % (cls, actual, notice, too_many))
+        print ("pid is %s, the classifier came back with: %s, the real answer is: %s %s %s" % (
+            allIds[key], cls, actual, notice, too_many))
 
         #print key,line,cls
     rate = right_count/len(testCategory)
