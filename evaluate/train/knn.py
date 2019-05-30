@@ -14,14 +14,15 @@ from model.evaluate import DbEvaluate
 from service.train import getModelByGroup
 
 # 分组个数
-groupNum = 15
+groupNum = 6
 # 每个组测试集占比
 testPercentage = 0.2
 # 模型id
-modelId = "5eaa738b471bb8100538ad4543546a66"
+modelId = "b28c2c3f2a479b809fce69a318ac67b0"
 
 db = DbEvaluate()
 trainModel = db.getKnnModel(modelId)
+originModel = db.getKnn(modelId)
 
 def z_score_norm(data_set):
     return preprocessing.MinMaxScaler().fit_transform(data_set)
@@ -32,7 +33,7 @@ def one_hot_norm(data_set):
     return enc.transform(data_set).toarray()
 
 def classifyNB(vec2Classify, n_name):
-    dating_data_mat_linear, testCategory = getModelByGroup(n_name, "dispersed", trainModel, groupNum, testPercentage)
+    dating_data_mat_linear, testCategory, allIds = getModelByGroup(n_name, "dispersed", trainModel, originModel["ids"], groupNum, testPercentage)
 
     norm_mat_linear = z_score_norm(dating_data_mat_linear)
     knn_classifier = KNeighborsClassifier()
@@ -43,7 +44,7 @@ def classifyNB(vec2Classify, n_name):
 
 
 def dating_class_test(n_name):
-    dating_data_mat_linear, testCategory = getModelByGroup(n_name, "test", trainModel, groupNum, testPercentage)
+    dating_data_mat_linear, testCategory, allIds = getModelByGroup(n_name, "test", trainModel, originModel["ids"], groupNum, testPercentage)
 
     testMatrix = z_score_norm(dating_data_mat_linear)
 
@@ -64,7 +65,7 @@ def dating_class_test(n_name):
         if cha >= 3 or cha <= -3 :
             too_many = "many"
 
-        print ("the classifier came back with: %s, the real answer is: %s %s %s" % (cls, actual, notice, too_many))
+        print ("pid is %s, the classifier came back with: %s, the real answer is: %s %s %s" % (allIds[key],cls, actual, notice, too_many))
 
         #print key,line,cls
     rate = right_count/len(testCategory)
