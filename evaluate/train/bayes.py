@@ -31,7 +31,7 @@ def classifyNB(vec2Classify, n_name):
     return predicted[0]
 
 def dating_class_test(n_name):
-
+    print ("\ngroup name is " + n_name)
     testMatrix, testCategory, allIds = getModelByGroup(n_name, "test", trainModel, originModel["ids"], groupNum, testPercentage)
 
     right_count = 0.0
@@ -65,12 +65,12 @@ def dating_class_test(n_name):
 def dating_class_test_all():
 
     total = 0
-    for n_name in range(10):
+    for n_name in range(groupNum):
         n_name = '%s' % n_name
         total += dating_class_test(n_name)
 
     print ("\n")
 
-    print ("avg rate is: %f" % (total/10))
+    print ("avg rate is: %f" % (total/groupNum))
 
 dating_class_test_all()
