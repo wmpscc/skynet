@@ -14,7 +14,7 @@ from model.evaluate import DbEvaluate
 from service.train import getModelByGroup
 
 # 分组个数
-groupNum = 6
+groupNum = 4
 # 每个组测试集占比
 testPercentage = 0.2
 # 模型id
@@ -44,6 +44,7 @@ def classifyNB(vec2Classify, n_name):
 
 
 def dating_class_test(n_name):
+    print ("\ngroup name is "+n_name)
     dating_data_mat_linear, testCategory, allIds = getModelByGroup(n_name, "test", trainModel, originModel["ids"], groupNum, testPercentage)
 
     testMatrix = z_score_norm(dating_data_mat_linear)
@@ -78,13 +79,13 @@ def dating_class_test(n_name):
 def dating_class_test_all():
 
     total = 0
-    for n_name in range(10):
+    for n_name in range(groupNum):
         n_name = '%s' % n_name
         total += dating_class_test(n_name)
 
     print ("\n")
 
-    print ("avg rate is: %f" % (total/10))
+    print ("avg rate is: %f" % (total/groupNum))
 
 dating_class_test_all()
 
