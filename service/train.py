@@ -83,3 +83,14 @@ def similarSort(master, origin):
     #     result_list.append(origin[sorted_distIndicies[i]])
 
     return sorted_distIndicies.tolist()
+
+def get_conf():
+    # 分组个数
+    groupNum = 1
+    # 每个组测试集占比
+    testPercentage = 0.2
+
+    # 模型id
+    modelId = "b28c2c3f2a479b809fce69a318ac67b0"
+
+    return modelId, groupNum, testPercentage

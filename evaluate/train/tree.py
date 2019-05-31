@@ -10,13 +10,10 @@ sys.path.append('../..')
 
 from model.evaluate import DbEvaluate
 from service.train import getModelByGroup
+from service.train import get_conf
 
 # 分组个数
-groupNum = 6
-# 每个组测试集占比
-testPercentage = 0.2
-# 模型id
-modelId = "b28c2c3f2a479b809fce69a318ac67b0"
+modelId, groupNum,testPercentage = get_conf()
 
 db = DbEvaluate()
 trainModel = db.getTreeModel(modelId)
