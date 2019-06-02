@@ -24,6 +24,11 @@ def classifyKnn(vec2Classify, modelId):
 
     db = DbEvaluate()
     trainModel = db.getKnnModel(modelId)
+    originModel = db.getKnn(modelId)
+
+    allow = False
+    if originModel["knn_open"] >0 :
+        allow = True
 
     dating_data_mat_linear = trainModel['feature']
     testCategory = trainModel['classificate']
@@ -33,7 +38,7 @@ def classifyKnn(vec2Classify, modelId):
     knn_classifier.fit(norm_mat_linear,testCategory)
 
     predicted = knn_classifier.predict(vec2Classify)
-    return predicted[0]
+    return predicted[0], allow
 
 
 #朴树贝叶斯（高斯模型）#
@@ -41,6 +46,11 @@ def classifyBayes(vec2Classify, modelId):
 
     db = DbEvaluate()
     trainModel = db.getKnnModel(modelId)
+    originModel = db.getKnn(modelId)
+
+    allow = False
+    if originModel["bayes_open"] > 0:
+        allow = True
 
     trainMatrix = trainModel['feature']
     trainCategory = trainModel['classificate']
@@ -49,13 +59,18 @@ def classifyBayes(vec2Classify, modelId):
 
     model.fit(trainMatrix, trainCategory)
     predicted = model.predict(vec2Classify)
-    return predicted[0]
+    return predicted[0], allow
 
 
 #决策树#
 def classifyTree(vec2Classify, modelId):
     db = DbEvaluate()
     trainModel = db.getKnnModel(modelId)
+    originModel = db.getKnn(modelId)
+
+    allow = False
+    if originModel["tree_open"] > 0:
+        allow = True
 
     trainMatrix = trainModel['feature']
     trainCategory = trainModel['classificate']
@@ -64,23 +79,30 @@ def classifyTree(vec2Classify, modelId):
     model.fit(trainMatrix, trainCategory)
 
     predicted = model.predict(vec2Classify)
-    return predicted[0]
+    return predicted[0],allow
 
 #逻辑控制#
 
 def classify(vec2Classify, modelId) :
     price = 0
+    total = 0
 
-    knnPrice = classifyKnn([vec2Classify], modelId)
-    price += knnPrice
+    knnPrice,knnAllow = classifyKnn([vec2Classify], modelId)
+    if knnAllow :
+        total+=1
+        price += knnPrice
 
-    bayesPrice = classifyBayes([vec2Classify], modelId)
-    price += bayesPrice
+    bayesPrice,bayes_allw = classifyBayes([vec2Classify], modelId)
+    if bayes_allw :
+        total += 1
+        price += bayesPrice
 
-    treePrice = classifyTree([vec2Classify], modelId)
-    price += treePrice
+    treePrice,tree_allow = classifyTree([vec2Classify], modelId)
+    if tree_allow :
+        total += 1
+        price += treePrice
 
-    return round(price/3, 2)
+    return round(price/total, 2)
 
 
 
