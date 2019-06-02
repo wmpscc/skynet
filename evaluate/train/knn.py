@@ -60,10 +60,13 @@ def dating_class_test(n_name):
 
         cha = cls-actual
         too_many = ""
+        pid = 0
+        if len(allIds) > 0:
+            pid = allIds[key]
         if cha >= 3 or cha <= -3 :
             too_many = "many"
 
-        print ("pid is %s, the classifier came back with: %s, the real answer is: %s %s %s" % (allIds[key],cls, actual, notice, too_many))
+        print ("pid is %s, the classifier came back with: %s, the real answer is: %s %s %s" % (pid,cls, actual, notice, too_many))
 
         #print key,line,cls
     rate = right_count/len(testCategory)
