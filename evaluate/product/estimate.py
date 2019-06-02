@@ -24,10 +24,10 @@ def classifyKnn(vec2Classify, modelId):
 
     db = DbEvaluate()
     trainModel = db.getKnnModel(modelId)
-    originModel = db.getKnn(modelId)
+    originModel = db.getOne(modelId)
 
     allow = False
-    if originModel["knn_open"] >0 :
+    if originModel.knn_open >0 :
         allow = True
 
     dating_data_mat_linear = trainModel['feature']
@@ -46,10 +46,10 @@ def classifyBayes(vec2Classify, modelId):
 
     db = DbEvaluate()
     trainModel = db.getKnnModel(modelId)
-    originModel = db.getKnn(modelId)
+    originModel = db.getOne(modelId)
 
     allow = False
-    if originModel["bayes_open"] > 0:
+    if originModel.bayes_open > 0:
         allow = True
 
     trainMatrix = trainModel['feature']
@@ -66,10 +66,10 @@ def classifyBayes(vec2Classify, modelId):
 def classifyTree(vec2Classify, modelId):
     db = DbEvaluate()
     trainModel = db.getKnnModel(modelId)
-    originModel = db.getKnn(modelId)
+    originModel = db.getOne(modelId)
 
     allow = False
-    if originModel["tree_open"] > 0:
+    if originModel.tree_open > 0:
         allow = True
 
     trainMatrix = trainModel['feature']
