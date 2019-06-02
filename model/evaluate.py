@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from model.connection import getDBSession
 import json
@@ -13,8 +13,11 @@ class Evaluate(Base):
     # 表的结构
     unique_id = Column(String(32), primary_key=True)
     bayes_model = Column(String(20))
+    bayes_open = Column(Integer)
     knn_model = Column(String(20))
+    knn_open = Column(Integer)
     tree_model = Column(String(20))
+    tree_open = Column(Integer)
 
 class DbEvaluate:
 
@@ -58,4 +61,7 @@ class DbEvaluate:
 
         origin = json.loads(my_evaluate.tree_model)
         return origin
+
+    def getOne(self, unique_id):
+        return self._getModel(unique_id)
 
