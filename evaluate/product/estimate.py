@@ -102,6 +102,9 @@ def classify(vec2Classify, modelId) :
         total += 1
         price += treePrice
 
+    if total == 0 :
+        return 0
+
     return round(price/total, 2)
 
 
