@@ -13,10 +13,13 @@ class Evaluate(Base):
     # 表的结构
     unique_id = Column(String(32), primary_key=True)
     bayes_model = Column(String(20))
+    bayes_amodel = Column(String(20))
     bayes_open = Column(Integer)
     knn_model = Column(String(20))
+    knn_amodel = Column(String(20))
     knn_open = Column(Integer)
     tree_model = Column(String(20))
+    tree_amodel = Column(String(20))
     tree_open = Column(Integer)
 
 class DbEvaluate:
@@ -28,21 +31,29 @@ class DbEvaluate:
     def _getModel(self, unique_id):
         return self.session.query(Evaluate).filter_by(unique_id=unique_id).first()
 
-    def getKnnModel(self, unique_id):
+    def getKnnModel(self, unique_id, is_add):
         my_evaluate = self._getModel(unique_id)
-        origin = json.loads(my_evaluate.knn_model)
+        if is_add :
+            origin = json.loads(my_evaluate.knn_amodel)
+        else :
+            origin = json.loads(my_evaluate.knn_model)
         return origin["train"]
 
-    def getBayesModel(self, unique_id):
+    def getBayesModel(self, unique_id, is_add):
         my_evaluate = self._getModel(unique_id)
 
-        origin = json.loads(my_evaluate.bayes_model)
+        if is_add :
+            origin = json.loads(my_evaluate.bayes_amodel)
+        else :
+            origin = json.loads(my_evaluate.bayes_model)
         return origin["train"]
 
-    def getTreeModel(self, unique_id):
+    def getTreeModel(self, unique_id, is_add):
         my_evaluate = self._getModel(unique_id)
-
-        origin = json.loads(my_evaluate.tree_model)
+        if is_add :
+            origin = json.loads(my_evaluate.tree_amodel)
+        else :
+            origin = json.loads(my_evaluate.tree_model)
         return origin["train"]
 
     def getKnn(self, unique_id):
