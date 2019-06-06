@@ -51,7 +51,7 @@ def dating_class_test(n_name):
         if cha >= 3 or cha <= -3 :
             too_many = "many"
 
-            print ("pid is %s, the classifier came back with: %s, the real answer is: %s %s %s" % (
+        print ("pid is %s, the classifier came back with: %s, the real answer is: %s %s %s" % (
                 pid, cls, actual, notice, too_many))
 
         #print key,line,cls
