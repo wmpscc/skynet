@@ -91,6 +91,8 @@ def get_conf():
     testPercentage = 0.2
 
     # 模型id
-    modelId = "b28c2c3f2a479b809fce69a318ac67b0"
+    modelId = "017adc861c20b360bddb4dce92d9608a"
 
-    return modelId, groupNum, testPercentage
+    isAdd = True
+
+    return modelId, groupNum, testPercentage, isAdd
