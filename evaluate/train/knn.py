@@ -15,10 +15,10 @@ from service.train import getModelByGroup
 from service.train import get_conf
 
 # 分组个数
-modelId, groupNum,testPercentage = get_conf()
+modelId, groupNum,testPercentage, isAdd = get_conf()
 
 db = DbEvaluate()
-trainModel = db.getKnnModel(modelId)
+trainModel = db.getKnnModel(modelId, isAdd)
 originModel = db.getKnn(modelId)
 
 def z_score_norm(data_set):
