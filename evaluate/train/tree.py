@@ -17,7 +17,7 @@ modelId, groupNum,testPercentage, isAdd = get_conf()
 
 db = DbEvaluate()
 trainModel = db.getTreeModel(modelId, isAdd)
-originModel = db.getKnn(modelId)
+originModel = db.getKnn(modelId, isAdd)
 
 def classifyNB(vec2Classify, n_name):
     trainMatrix, trainCategory, allIds = getModelByGroup(n_name, "dispersed", trainModel, originModel["ids"], groupNum, testPercentage)

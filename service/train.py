@@ -86,7 +86,7 @@ def similarSort(master, origin):
 
 def get_conf():
     # 分组个数
-    groupNum = 1
+    groupNum = 6
     # 每个组测试集占比
     testPercentage = 0.2
 
@@ -94,5 +94,6 @@ def get_conf():
     modelId = "017adc861c20b360bddb4dce92d9608a"
 
     isAdd = True
+    #isAdd = False
 
     return modelId, groupNum, testPercentage, isAdd

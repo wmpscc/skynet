@@ -19,7 +19,7 @@ modelId, groupNum,testPercentage, isAdd = get_conf()
 
 db = DbEvaluate()
 trainModel = db.getKnnModel(modelId, isAdd)
-originModel = db.getKnn(modelId)
+originModel = db.getKnn(modelId, isAdd)
 
 def z_score_norm(data_set):
     return preprocessing.MinMaxScaler().fit_transform(data_set)
