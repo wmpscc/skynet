@@ -86,14 +86,18 @@ def similarSort(master, origin):
 
 def get_conf():
     # 分组个数
-    groupNum = 6
+    groupNum = 1
     # 每个组测试集占比
     testPercentage = 0.2
 
     # 模型id
     modelId = "017adc861c20b360bddb4dce92d9608a"
 
+    # 是否增量训练
     isAdd = True
     #isAdd = False
 
-    return modelId, groupNum, testPercentage, isAdd
+    #误差金额（万）
+    errorMoney = 3
+
+    return modelId, groupNum, testPercentage, isAdd, errorMoney

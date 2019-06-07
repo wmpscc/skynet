@@ -15,7 +15,7 @@ from service.train import getModelByGroup
 from service.train import get_conf
 
 # 分组个数
-modelId, groupNum,testPercentage, isAdd = get_conf()
+modelId, groupNum,testPercentage, isAdd, errorMoney = get_conf()
 
 db = DbEvaluate()
 trainModel = db.getKnnModel(modelId, isAdd)
@@ -63,7 +63,7 @@ def dating_class_test(n_name):
         pid = 0
         if len(allIds) > 0:
             pid = allIds[key]
-        if cha >= 3 or cha <= -3 :
+        if cha >= errorMoney or cha <= -errorMoney :
             too_many = "many"
 
         print ("pid is %s, the classifier came back with: %s, the real answer is: %s %s %s" % (pid,cls, actual, notice, too_many))
