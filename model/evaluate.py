@@ -64,7 +64,7 @@ class DbEvaluate:
             origin = json.loads(my_evaluate.knn_model)
         return origin
 
-    def getBayes(self, unique_id):
+    def getBayes(self, unique_id, is_add):
         my_evaluate = self._getModel(unique_id)
         if is_add:
             origin = json.loads(my_evaluate.bayes_amodel)
@@ -72,7 +72,7 @@ class DbEvaluate:
             origin = json.loads(my_evaluate.bayes_model)
         return origin
 
-    def getTree(self, unique_id):
+    def getTree(self, unique_id, is_add):
         my_evaluate = self._getModel(unique_id)
         if is_add:
             origin = json.loads(my_evaluate.tree_amodel)
