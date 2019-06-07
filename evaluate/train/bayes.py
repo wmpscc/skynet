@@ -15,7 +15,7 @@ modelId, groupNum,testPercentage, isAdd, errorMoney = get_conf()
 
 db = DbEvaluate()
 trainModel = db.getBayesModel(modelId, isAdd)
-originModel = db.getKnn(modelId, isAdd)
+originModel = db.getBayes(modelId, isAdd)
 
 def classifyNB(vec2Classify, n_name):
 
