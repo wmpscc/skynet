@@ -22,8 +22,17 @@
 # print "Total Employee %d" % Employee.empCount
 
 # 获取单个
-from evaluate.product.estimate import classify
+import evaluate.product.estimate
 
-price = classify([1.69, 1525104000, 5], "017adc861c20b360bddb4dce92d9608a")
+atom = [1.69, 1525104000, 5]
+model_id = "017adc861c20b360bddb4dce92d9608a"
 
-print (price)
+tree_price = evaluate.product.estimate.classifyTree([atom], model_id)
+
+bayes_price = evaluate.product.estimate.classifyBayes([atom], model_id)
+
+knn_price = evaluate.product.estimate.classifyKnn([atom], model_id)
+
+print ("tree price is ", tree_price)
+print ("bayes price is ", bayes_price)
+print ("knn price is ", knn_price)
