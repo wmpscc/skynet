@@ -21,7 +21,9 @@
 # emp2.displayEmployee()
 # print "Total Employee %d" % Employee.empCount
 
-from model.evaluate import DbEvaluate
+# 获取单个
+from evaluate.product.estimate import classify
 
-s = DbEvaluate()
-s.getModl(12)
+price = classify([1.69, 1525104000, 5], "017adc861c20b360bddb4dce92d9608a")
+
+print (price)
