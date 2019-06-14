@@ -112,10 +112,10 @@ def scanBelong():
         else:
             break
 
-    print (num)
-    print (sell_success)
-    print (buy_success)
-    print (default_success)
+    print ("total:%s" % num)
+    print ("sell:%d" % sell_success)
+    print ("buy:%d" % buy_success)
+    print ("default:%d" % default_success)
 
 def _get_line(file):
     fr = open(file)
