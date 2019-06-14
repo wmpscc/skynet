@@ -4,7 +4,7 @@ import jieba
 import random
 
 # 载入模型
-classifier = fasttext.load_model('../resources/model/source_online.bin', label_prefix='__label__')
+classifier = fasttext.load_model('source.bin', label_prefix='__label__')
 
 
 
