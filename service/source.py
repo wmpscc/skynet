@@ -55,6 +55,7 @@ def writeTrainTxt():
     print ("buy:%d" % buy_success)
     print ("default:%d" % default_success)
 
+# 训练模型
 def trainModel():
     # 写入训练原始数据
     writeTrainTxt()
@@ -73,6 +74,7 @@ def trainModel():
     print ('R@1:', result.recall)
     print ('Number of examples:', result.nexamples)
 
+# 分类新入帖子
 def scanBelong():
     db = DbSource()
 
