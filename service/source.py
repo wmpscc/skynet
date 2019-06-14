@@ -73,6 +73,48 @@ def trainModel():
     print ('R@1:', result.recall)
     print ('Number of examples:', result.nexamples)
 
+def scanBelong():
+    db = DbSource()
+
+    id = 0
+
+    num = 0
+    sell_success = 0
+    buy_success = 0
+    default_success = 0
+
+    while (True):
+        list = trainModel = db.getWaitDetermineForeachList(id, 0, 0)
+        if (len(list) > 0):
+            for one in list:
+                id = one.id
+                num += 1
+                print ("each:%s" % (id))
+
+                text = (one.title + one.content).strip()
+                action = _get_action(text)
+                if (action == 'sell'):
+                    sell_success += 1
+                    db.suspectedSell(id)
+                    print ("sell:%s" % (id))
+
+                elif (action == 'buy'):
+                    buy_success += 1
+                    db.suspectedBuy(id)
+                    print ("buy:%s" % (id))
+
+                elif (action == 'default'):
+                    default_success += 1
+                    db.suspectedDefault(id)
+                    print ("default:%s" % (id))
+        else:
+            break
+
+    print (num)
+    print (sell_success)
+    print (buy_success)
+    print (default_success)
+
 def _get_line(file):
     fr = open(file)
     need = []
@@ -86,3 +128,11 @@ def _get_line(file):
             need.append(content+tag+struct[1]+"\n")
     random.shuffle(need)
     return need
+
+def _get_action(input):
+    classifier = fasttext.load_model('../resources/model/source_online.bin', label_prefix='__label__')
+    words = " ".join(jieba.lcut(input))
+    texts = [words]
+    lables = classifier.predict(texts)
+    #print (lables)
+    return lables[0][0]
