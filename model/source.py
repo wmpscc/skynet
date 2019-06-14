@@ -28,6 +28,8 @@ class DbSource:
     def getWaitDetermineForeachList(self, id, status, intention):
         return self.session.query(Source).filter(Source.id >id, Source.status==status, Source.intention == intention).order_by(Source.id.asc()).limit(100).all()
 
+    def getDetermineForeachList(self, id, status):
+        return self.session.query(Source).filter(Source.id >id, Source.status==status).order_by(Source.id.asc()).limit(100).all()
     def suspectedSell(self, id):
         cur = self.session.query(Source).get(id)
         cur.intention = 8
