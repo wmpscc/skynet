@@ -3,6 +3,21 @@ import fasttext
 import jieba
 import random
 
+def filterKeyword(text):
+    text = text.replace("\n", "").replace("\r", "")
+
+    words = ['macan', '玛卡', 'mancn', 'macans', 'macangts', 'macanturbo', '迈凯', 'cayman', '718', 'boxster', '盒子',
+             'Panamera', '卡宴', '卡曼', '博克斯特', '曼卡', 'glc', 'mancan', '987.2', '911']
+    if (len(text) > 0):
+        text = text.lower()
+
+        # for word in words:
+        #     text = text.replace(word, "苹果")
+
+        return text
+
+    return ''
+
 # 载入模型
 classifier = fasttext.load_model('source.bin', label_prefix='__label__')
 
@@ -24,10 +39,10 @@ classifier = fasttext.load_model('source.bin', label_prefix='__label__')
 #input = 'Macan什么时候换代？换代后是用新Q5的底盘吗应该还有汽油版吧？'
 #input = '山东，济南！！价格求指教小弟想请教一下山东济南20t的macan能优惠多少，比如说是选配完63w，能优惠多少钱！！请懂得大神指教一下，老婆着急买，自己也不太懂，请大神指教一下'
 
-input = '19年一月新提牧马人沙哈拉2.0出，带无钥匙和远程启动。'
+input = '个人购买09年到11年的盒子，价格35以内，诚心'
 
 # 测试文本
-words = " ".join(jieba.lcut(input))
+words = " ".join(jieba.lcut(filterKeyword(input)))
 texts = [words]
 lables=classifier.predict(texts)
 print(lables)
