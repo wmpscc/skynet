@@ -16,10 +16,10 @@ from model.source import DbSource
 # resources/content/source_verify.txt 用于验证训练完毕的模型的!!验证集!!数据
 
 # 写入训练的原始数据（待分词）
-def writeTrainTxt(file_name, status):
+def writeTrainTxt():
     db = DbSource()
     id = 0
-    out = open("../resources/content/"+file_name, 'w')
+    out = open("../resources/content/source_origin.txt", 'w')
 
     train_num = 0
     sell_success = 0
@@ -29,7 +29,7 @@ def writeTrainTxt(file_name, status):
     new_success = 0
 
     while(True):
-        lines = db.getDetermineForeachList(id, status)
+        lines = db.getDetermineForeachList(id, 9)
         if (len(lines) > 0) :
             for line in lines:
                 id = line.id
@@ -74,13 +74,38 @@ def writeTrainTxt(file_name, status):
         # 验证
         print ("total:%d" % new_success)
 
+def writeVerifyTxt():
+    db = DbSource()
+    id = 0
+    out = open("../resources/content/source_origin_verify.txt", 'w')
+
+    new_success = 0
+
+    while (True):
+        lines = db.getDetermineForeachList(id, 0)
+        if (len(lines) > 0):
+            for line in lines:
+                id = line.id
+                text = (line.title + line.content).strip()
+                if (len(text) > 0):
+                    text = text.replace("\n", "").replace("\r", "")
+
+                    out.write(text + " __label__default\n")
+                    new_success += 1
+        else:
+            break
+    out.close()
+
+    # 验证
+    print ("total:%d" % new_success)
+
+
 # 训练模型
 def trainModel():
     # 写入训练原始数据
-    file_name = 'source_origin.txt'
-    writeTrainTxt(file_name, 9)
+    writeTrainTxt()
 
-    lines = _get_line("../resources/content/"+file_name)
+    lines = _get_line("../resources/content/source_origin.txt")
 
     source_file = "../resources/content/source.txt"
     out = open(source_file, 'w')
@@ -97,10 +122,9 @@ def trainModel():
 # 验证集
 def verifyModel():
     # 写入训练原始数据
-    file_name = 'source_origin_verify.txt'
-    writeTrainTxt(file_name, 0)
+    writeVerifyTxt()
 
-    lines = _get_line("../resources/content/"+file_name)
+    lines = _get_line("../resources/content/source_origin_verify.txt")
 
     source_file = "../resources/content/source_verify.txt"
     out = open(source_file, 'w')
