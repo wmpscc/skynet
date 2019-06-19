@@ -35,6 +35,7 @@ def writeTrainTxt(file_name, status):
                 id = line.id
                 text = (line.title+line.content).strip()
                 if (len(text) > 0):
+                    text = text.replace("\n", "").replace("\r", "")
 
                     if (line.intention == 2):
                         # 普通帖子
