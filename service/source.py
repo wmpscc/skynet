@@ -16,7 +16,11 @@ from model.source import DbSource
 # resources/content/source_verify.txt 用于验证训练完毕的模型的!!验证集!!数据
 
 # 写入训练的原始数据（待分词）
-def filterKeyword(text):
+def filterKeyword(line):
+
+    text = (line.title + line.content).strip()
+    text = text.replace("\n", "").replace("\r", "")
+
     words = ['macan', '玛卡', 'mancn', 'macans', 'macangts', 'macanturbo', '迈凯', 'cayman', '718', 'boxster', '盒子',
              'Panamera']
     if (len(text) > 0):
@@ -44,11 +48,8 @@ def writeTrainTxt():
         if (len(lines) > 0) :
             for line in lines:
                 id = line.id
-                text = (line.title+line.content).strip()
-                text = filterKeyword(text)
+                text = filterKeyword(line)
                 if (len(text) > 0):
-                    text = text.replace("\n", "").replace("\r", "")
-
                     if (line.intention == 2):
                         # 普通帖子
                         out.write(text+" __label__default\n")
@@ -89,9 +90,8 @@ def writeVerifyTxt():
         if (len(lines) > 0):
             for line in lines:
                 id = line.id
-                text = (line.title + line.content).strip()
+                text = filterKeyword(line)
                 if (len(text) > 0):
-                    text = text.replace("\n", "").replace("\r", "")
 
                     out.write(text + " __label__default\n")
                     new_success += 1
@@ -143,6 +143,20 @@ def verifyModel():
     print ('R@1:', result.recall)
     print ('Number of examples:', result.nexamples)
 
+def _get_line(file):
+    fr = open(file)
+    need = []
+    tag = " __label__"
+    for line in fr.readlines():
+        line = line.strip()
+        if(len(line) >0 ):
+            struct = line.split(tag)
+            if(len(struct) == 2):
+                content = " ".join(jieba.lcut(struct[0]))
+                need.append(content+tag+struct[1]+"\n")
+    random.shuffle(need)
+    return need
+
 # 分类新入帖子
 def scanBelong():
     db = DbSource()
@@ -161,8 +175,7 @@ def scanBelong():
                 id = one.id
                 num += 1
                 print ("each:%s" % (id))
-
-                text = (one.title + one.content).strip()
+                text = filterKeyword(one)
                 if(len(text) == 0):
                     db.suspectedDel(id)
                     continue
@@ -189,20 +202,6 @@ def scanBelong():
     print ("sell:%d" % sell_success)
     print ("buy:%d" % buy_success)
     print ("default:%d" % default_success)
-
-def _get_line(file):
-    fr = open(file)
-    need = []
-    tag = " __label__"
-    for line in fr.readlines():
-        line = line.strip()
-        if(len(line) >0 ):
-            struct = line.split(tag)
-            if(len(struct) == 2):
-                content = " ".join(jieba.lcut(struct[0]))
-                need.append(content+tag+struct[1]+"\n")
-    random.shuffle(need)
-    return need
 
 def _get_action(input):
     classifier = fasttext.load_model('../resources/model/source_online.bin', label_prefix='__label__')
