@@ -16,6 +16,19 @@ from model.source import DbSource
 # resources/content/source_verify.txt 用于验证训练完毕的模型的!!验证集!!数据
 
 # 写入训练的原始数据（待分词）
+def filterKeyword(text):
+    words = ['macan', '玛卡', 'mancn', 'macans', 'macangts', 'macanturbo', '迈凯', 'cayman', '718', 'boxster', '盒子',
+             'Panamera']
+    if (len(text) > 0):
+        text = text.lower()
+
+        for word in words:
+            text = text.replace(word, "苹果")
+
+        return text
+
+    return ''
+
 def writeTrainTxt():
     db = DbSource()
     id = 0
@@ -32,6 +45,7 @@ def writeTrainTxt():
             for line in lines:
                 id = line.id
                 text = (line.title+line.content).strip()
+                text = filterKeyword(text)
                 if (len(text) > 0):
                     text = text.replace("\n", "").replace("\r", "")
 
