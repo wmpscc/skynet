@@ -66,3 +66,9 @@ class DbSource:
         cur.operate_sort = operate_sort
         self.session.add(cur)
         self.session.commit()
+
+    def suspectedDel(self, id):
+        cur = self.session.query(Source).get(id)
+        cur.status = 99
+        self.session.add(cur)
+        self.session.commit()
