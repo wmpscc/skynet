@@ -26,8 +26,8 @@ def filterKeyword(line):
     if (len(text) > 0):
         text = text.lower()
 
-        for word in words:
-            text = text.replace(word, "苹果")
+        # for word in words:
+        #     text = text.replace(word, "苹果")
 
         return text
 
