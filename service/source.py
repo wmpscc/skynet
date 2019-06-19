@@ -9,11 +9,17 @@ sys.path.append('..')
 
 from model.source import DbSource
 
+# resources/content/source_origin.txt 打好标签的最原始数据（从db读入的）
+# resources/content/source.txt 已分词完毕的数据
+
+# resources/content/source_origin_verify.txt 打好标签的最原始!!验证集!!数据（从db读入的）
+# resources/content/source_verify.txt 用于验证训练完毕的模型的!!验证集!!数据
+
 # 写入训练的原始数据（待分词）
-def writeTrainTxt():
+def writeTrainTxt(file_name):
     db = DbSource()
     id = 0
-    out = open("../resources/content/source_origin.txt", 'w')
+    out = open("../resources/content/"+file_name, 'w')
 
     num = 0
     sell_success = 0
@@ -58,9 +64,10 @@ def writeTrainTxt():
 # 训练模型
 def trainModel():
     # 写入训练原始数据
-    writeTrainTxt()
+    file_name = 'source_origin.txt'
+    writeTrainTxt(file_name)
 
-    lines = _get_line("../resources/content/source_origin.txt")
+    lines = _get_line("../resources/content/"+file_name)
 
     source_file = "../resources/content/source.txt"
     out = open(source_file, 'w')
@@ -68,6 +75,28 @@ def trainModel():
         out.write(li)
 
     classifier = fasttext.supervised(source_file, '../resources/model/source_online', label_prefix='__label__', epoch=50)
+    result = classifier.test(source_file)
+    print ("\n")
+    print ('P@1:', result.precision)
+    print ('R@1:', result.recall)
+    print ('Number of examples:', result.nexamples)
+
+# 验证集
+def verifyModel():
+    # 写入训练原始数据
+    file_name = 'source_origin_verify.txt'
+    writeTrainTxt(file_name)
+
+    lines = _get_line("../resources/content/"+file_name)
+
+    source_file = "../resources/content/source_verify.txt"
+    out = open(source_file, 'w')
+    for li in lines:
+        out.write(li)
+
+    classifier = fasttext.load_model('../resources/model/source_online.bin', label_prefix='__label__')
+
+
     result = classifier.test(source_file)
     print ("\n")
     print ('P@1:', result.precision)
