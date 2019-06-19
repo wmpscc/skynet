@@ -115,7 +115,7 @@ def trainModel():
     for li in lines:
         out.write(li)
 
-    classifier = fasttext.supervised(source_file, '../resources/model/source_online', label_prefix='__label__', epoch=50)
+    classifier = fasttext.supervised(source_file, '../resources/model/source_online', label_prefix='__label__', epoch=100)
     result = classifier.test(source_file)
     print ("\n")
     print ('P@1:', result.precision)
