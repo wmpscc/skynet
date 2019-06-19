@@ -49,7 +49,7 @@ def write_line(type, lines):
 
 def train(n):
     # epoch 训练次数
-    classifier = fasttext.supervised("source_train.txt", 'source', label_prefix='__label__', epoch = 50)
+    classifier = fasttext.supervised("source_train.txt", 'source', label_prefix='__label__', epoch = 100)
 
     result = classifier.test("source_test.txt")
     print ("group num is %s, and rate is:%f\n" % (n, result.precision))
