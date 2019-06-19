@@ -22,7 +22,7 @@ def filterKeyword(line):
     text = text.replace("\n", "").replace("\r", "")
 
     words = ['macan', '玛卡', 'mancn', 'macans', 'macangts', 'macanturbo', '迈凯', 'cayman', '718', 'boxster', '盒子',
-             'Panamera', '卡宴', '卡曼', '博克斯特']
+             'Panamera', '卡宴', '卡曼', '博克斯特', '曼卡', 'glc', 'mancan', '987.2', '911']
     if (len(text) > 0):
         text = text.lower()
 
