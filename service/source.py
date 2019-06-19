@@ -26,8 +26,6 @@ def writeTrainTxt():
     buy_success = 0
     default_success = 0
 
-    new_success = 0
-
     while(True):
         lines = db.getDetermineForeachList(id, 9)
         if (len(lines) > 0) :
@@ -55,24 +53,15 @@ def writeTrainTxt():
 
                         train_num += 1
                         sell_success+=1
-                    else:
-                        # 刚入库的
-                        out.write(text +" __label__default\n")
-                        new_success += 1
         else:
             break
     out.close()
 
-
-    if(status == 9):
-        # 训练
-        print ("total:%d" % train_num)
-        print ("sell:%d" % sell_success)
-        print ("buy:%d" % buy_success)
-        print ("default:%d" % default_success)
-    else:
-        # 验证
-        print ("total:%d" % new_success)
+    # 训练
+    print ("total:%d" % train_num)
+    print ("sell:%d" % sell_success)
+    print ("buy:%d" % buy_success)
+    print ("default:%d" % default_success)
 
 def writeVerifyTxt():
     db = DbSource()
