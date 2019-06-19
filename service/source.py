@@ -135,6 +135,10 @@ def scanBelong():
                 print ("each:%s" % (id))
 
                 text = (one.title + one.content).strip()
+                if(len(text) == 0):
+                    db.suspectedDel(id)
+                    continue
+
                 action = _get_action(text)
                 if (action == 'sell'):
                     sell_success += 1
