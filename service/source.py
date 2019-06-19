@@ -16,18 +16,20 @@ from model.source import DbSource
 # resources/content/source_verify.txt 用于验证训练完毕的模型的!!验证集!!数据
 
 # 写入训练的原始数据（待分词）
-def writeTrainTxt(file_name):
+def writeTrainTxt(file_name, status):
     db = DbSource()
     id = 0
     out = open("../resources/content/"+file_name, 'w')
 
-    num = 0
+    train_num = 0
     sell_success = 0
     buy_success = 0
     default_success = 0
 
+    new_success = 0
+
     while(True):
-        lines = db.getDetermineForeachList(id, 9)
+        lines = db.getDetermineForeachList(id, status)
         if (len(lines) > 0) :
             for line in lines:
                 id = line.id
@@ -38,34 +40,41 @@ def writeTrainTxt(file_name):
                         # 普通帖子
                         out.write(text+" __label__default\n")
 
-                        num+=1
+                        train_num+=1
                         default_success+=1
                     elif (line.intention == 5):
                         # 购买意向帖子
                         out.write(text + " __label__buy\n")
 
-                        num += 1
+                        train_num += 1
                         buy_success+=1
                     elif (line.intention == 9):
                         # 出售意向帖子
                         out.write(text + " __label__sell\n")
 
-                        num += 1
+                        train_num += 1
                         sell_success+=1
+                    else:
+                        # 刚入库的
+                        out.write(text +" __label__default\n")
+                        new_success += 1
         else:
             break
     out.close()
 
-    print ("total:%d" % num)
-    print ("sell:%d" % sell_success)
-    print ("buy:%d" % buy_success)
-    print ("default:%d" % default_success)
+    if(status == 9):
+        print ("total:%d" % train_num)
+        print ("sell:%d" % sell_success)
+        print ("buy:%d" % buy_success)
+        print ("default:%d" % default_success)
+    else:
+        print ("total:%d" % new_success)
 
 # 训练模型
 def trainModel():
     # 写入训练原始数据
     file_name = 'source_origin.txt'
-    writeTrainTxt(file_name)
+    writeTrainTxt(file_name, 9)
 
     lines = _get_line("../resources/content/"+file_name)
 
@@ -85,7 +94,7 @@ def trainModel():
 def verifyModel():
     # 写入训练原始数据
     file_name = 'source_origin_verify.txt'
-    writeTrainTxt(file_name)
+    writeTrainTxt(file_name, 0)
 
     lines = _get_line("../resources/content/"+file_name)
 
