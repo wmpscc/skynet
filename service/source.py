@@ -62,12 +62,15 @@ def writeTrainTxt(file_name, status):
             break
     out.close()
 
+
     if(status == 9):
+        # 训练
         print ("total:%d" % train_num)
         print ("sell:%d" % sell_success)
         print ("buy:%d" % buy_success)
         print ("default:%d" % default_success)
     else:
+        # 验证
         print ("total:%d" % new_success)
 
 # 训练模型
