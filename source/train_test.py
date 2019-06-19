@@ -7,6 +7,9 @@ import os, sys
 
 # 先分词
 
+# source_train.txt  训练数据集
+# source_test.txt   测试数据集
+
 group = 1
 billard = 0.2
 
