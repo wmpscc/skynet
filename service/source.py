@@ -170,9 +170,9 @@ def _get_line(file):
         line = line.strip()
         if(len(line) >0 ):
             struct = line.split(tag)
-
-            content = " ".join(jieba.lcut(struct[0]))
-            need.append(content+tag+struct[1]+"\n")
+            if(len(struct) == 2):
+                content = " ".join(jieba.lcut(struct[0]))
+                need.append(content+tag+struct[1]+"\n")
     random.shuffle(need)
     return need
 
