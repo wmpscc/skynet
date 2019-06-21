@@ -23,8 +23,11 @@ def one_hot_norm(data_set):
 def classifyKnn(vec2Classify, modelId):
 
     db = DbEvaluate()
-    trainModel = db.getKnnModel(modelId, False)
     originModel = db.getOne(modelId)
+    if originModel == None:
+        return [0, False]
+    trainModel = db.getKnnModel(modelId, False)
+
 
     allow = False
     if originModel.knn_open >0 :
@@ -45,8 +48,11 @@ def classifyKnn(vec2Classify, modelId):
 def classifyBayes(vec2Classify, modelId):
 
     db = DbEvaluate()
-    trainModel = db.getBayesModel(modelId, False)
     originModel = db.getOne(modelId)
+    if originModel == None:
+        return [0,False]
+    trainModel = db.getBayesModel(modelId, False)
+
 
     allow = False
     if originModel.bayes_open > 0:
@@ -65,8 +71,11 @@ def classifyBayes(vec2Classify, modelId):
 #决策树#
 def classifyTree(vec2Classify, modelId):
     db = DbEvaluate()
-    trainModel = db.getTreeModel(modelId, False)
     originModel = db.getOne(modelId)
+    if originModel == None:
+        return [0,False]
+    trainModel = db.getTreeModel(modelId, False)
+
 
     allow = False
     if originModel.tree_open > 0:
