@@ -39,7 +39,7 @@ classifier = fasttext.load_model('source.bin', label_prefix='__label__')
 #input = 'Macan什么时候换代？换代后是用新Q5的底盘吗应该还有汽油版吧？'
 #input = '山东，济南！！价格求指教小弟想请教一下山东济南20t的macan能优惠多少，比如说是选配完63w，能优惠多少钱！！请懂得大神指教一下，老婆着急买，自己也不太懂，请大神指教一下'
 
-input = '个人购买09年到11年的盒子，价格35以内，诚心'
+input = '15出16上保时捷macan，沪牌个人一手🚗车、原版原漆4.5公里，加装了boss音响，还有蓝色油漆，行李架，轮毂标。急腾指标拒绝你的次数越多，机会也就越多，加油'
 
 # 测试文本
 words = " ".join(jieba.lcut(filterKeyword(input)))
